@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box formulario">
     <div class="columns">
       <div
         class="column is-8"
@@ -14,7 +14,7 @@
         />
       </div>
       <div class="column">
-        <temporizador @aoTemporizadorFinalziado="finalizarTarefa"/>
+        <temporizador @aoTemporizadorFinalizado="finalizarTarefa"/>
       </div>
     </div>
   </div>
@@ -27,6 +27,7 @@ import Temporizador from './Temporizador.vue'
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Formulário",
+  emits: ['aoSalvarTarefa'],
   components: {
       Temporizador
   },
@@ -37,7 +38,10 @@ export default defineComponent({
   },
   methods: {
       finalizarTarefa (tempoDecorrido: number) : void {
-          console.log(`tempo de tarefa`, tempoDecorrido)
+          this.$emit('aoSalvarTarefa', {
+            duracaoEmSegundos: tempoDecorrido,
+            descricao: this.descricao
+          })
           this.descricao = ''
       }
   }
@@ -45,5 +49,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.formulario {
+  color: var(--texto-primario);
+  background-color: var(--bg-primario);
+}
 </style>

@@ -1,29 +1,59 @@
 <template>
   <main class="columns is-gapless is-multiline">
     <div class="column is-one-quarter">
-      <barra-lateral/>
+      <barra-lateral />
     </div>
 
     <div class="column is-three-quarter">
-      <formulario/>
+      <formulario @aoSalvarTarefa="salvarTarefa" />
+      <div class="lista">
+        <Tarefa
+          v-for="(tarefa, index) in tarefas"
+          :key="index"
+          :tarefa="tarefa"
+        />
+      </div>
+      <Box v-if="listaEstaVazia"> Você não está produtivo hoje :( </Box>
     </div>
   </main>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import BarraLateral from './components/BarraLateral.vue';
-import Formulario from './components/Formulario.vue';
+import { defineComponent } from "vue";
+import BarraLateral from "./components/BarraLateral.vue";
+import Formulario from "./components/Formulario.vue";
+import Tarefa from "./components/Tarefa.vue";
+import ITarefa from "./interfaces/ITarefa";
+import Box from "./components/Box.vue";
 
 export default defineComponent({
-  name: 'App',
+  name: "App",
   components: {
     BarraLateral,
-    Formulario
-  }
+    Formulario,
+    Tarefa,
+    Box,
+  },
+  data() {
+    return {
+      tarefas: [] as ITarefa[]
+    };
+  },
+  computed: {
+    listaEstaVazia(): boolean {
+      return this.tarefas.length === 0;
+    },
+  },
+  methods: {
+    salvarTarefa(tarefa: ITarefa) {
+      this.tarefas.push(tarefa);
+    },
+  },
 });
 </script>
 
 <style>
-
+.lista {
+  padding: 1.25rem;
+}
 </style>
